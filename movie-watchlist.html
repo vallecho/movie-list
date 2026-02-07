@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Val & Orie's Movie Watchlist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #ff006e;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        }
+
+        .subtitle {
+            color: #00d9ff;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            color: #ff006e;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #00d9ff;
+            text-transform: uppercase;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 0, 110, 0.3);
+            color: #e0e0e0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 0, 110, 0.2);
+            border-color: #ff006e;
+        }
+
+        .filter-btn.active {
+            background: #ff006e;
+            border-color: #ff006e;
+            color: white;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(139, 0, 255, 0.2));
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .category-title {
+            font-size: 1.3em;
+            color: #ff006e;
+            font-weight: bold;
+        }
+
+        .category-progress {
+            font-size: 0.9em;
+            color: #00d9ff;
+        }
+
+        .movie-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .movie-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .movie-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .movie-item.watched {
+            opacity: 0.6;
+            border-left-color: #00ff88;
+        }
+
+        .movie-item.priority-val {
+            border-left-color: #ff006e;
+        }
+
+        .movie-item.priority-orie {
+            border-left-color: #00d9ff;
+        }
+
+        .checkbox-wrapper {
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #ff006e;
+        }
+
+        .movie-content {
+            flex: 1;
+        }
+
+        .movie-title {
+            font-size: 1.1em;
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .movie-meta {
+            font-size: 0.85em;
+            color: #00d9ff;
+            margin-bottom: 5px;
+        }
+
+        .movie-notes {
+            font-size: 0.9em;
+            color: #b0b0b0;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.75em;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        .priority-val-badge {
+            background: rgba(255, 0, 110, 0.3);
+            color: #ff006e;
+        }
+
+        .priority-orie-badge {
+            background: rgba(0, 217, 255, 0.3);
+            color: #00d9ff;
+        }
+
+        .together-badge {
+            background: rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .collapsed .movie-list {
+            display: none;
+        }
+
+        .collapse-icon {
+            transition: transform 0.3s;
+        }
+
+        .collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .reset-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: rgba(255, 0, 110, 0.8);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.4);
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #ff006e;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-number {
+                font-size: 1.5em;
+            }
+
+            .category-title {
+                font-size: 1.1em;
+            }
+
+            .movie-title {
+                font-size: 1em;
+            }
+
+            .reset-btn {
+                bottom: 10px;
+                right: 10px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Val & Orie's Movie Watchlist</h1>
+            <p class="subtitle">Compiled from conversations • Jan-Feb 2026</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalMovies">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="watchedMovies">0</div>
+                <div class="stat-label">Watched</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="remainingMovies">0</div>
+                <div class="stat-label">Remaining</div>
+            </div>
+        </div>
+
+        <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search movies...">
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="unwatched">Unwatched</button>
+            <button class="filter-btn" data-filter="watched">Watched</button>
+            <button class="filter-btn" data-filter="priority-val">Val's Priority</button>
+            <button class="filter-btn" data-filter="priority-orie">Orie's Priority</button>
+        </div>
+
+        <div id="movieContainer"></div>
+
+        <button class="reset-btn" onclick="resetProgress()">🔄 Reset All</button>
+    </div>
+
+    <script>
+        const movies = {
+            "Yorgos Lanthimos Films": [
+                { title: "Bugonia", year: "2026", notes: "Available in Val's private collection. No longer in UK theaters.", priority: [] },
+                { title: "The Killing of a Sacred Deer", year: "", notes: "Nicole Kidman stars, early A24 era. Orie: 'She was good at acting like android'", priority: ["val"] }
+            ],
+            "Japanese/Asian Cinema": [
+                { title: "Rental Family", year: "", notes: "Same director as BEEF. Japan premiere at Tokyo Int'l Film Festival. Planning to watch together.", priority: ["together"] },
+                { title: "Stoker", year: "", notes: "Park Chan-wook, Nicole Kidman. Orie: 'That's my favorite'", priority: ["val"] }
+            ],
+            "Wes Anderson": [
+                { title: "The Phoenician Scheme", year: "", notes: "Val watched Jan 27, 2026", priority: [] }
+            ],
+            "British Cinema": [
+                { title: "Trainspotting", year: "1996", notes: "Great soundtrack (Lou Reed, New Order). Val went to Scotland to visit locations. Orie wants to rewatch.", priority: ["together"] },
+                { title: "Trainspotting 2 (T2)", year: "", notes: "Val has seen, Orie hasn't", priority: ["together"] },
+                { title: "Monty Python and the Holy Grail", year: "", notes: "Filmed at castle in Scotland", priority: [] },
+                { title: "In Bruges", year: "", notes: "Val loves it. Mix of comedy and seriousness.", priority: ["orie"] },
+                { title: "Hot Fuzz", year: "", notes: "Edgar Wright. Filmed in Wells. Both love it.", priority: [] },
+                { title: "Shaun of the Dead", year: "", notes: "Edgar Wright. Both love it.", priority: [] },
+                { title: "The World's End", year: "", notes: "Edgar Wright. Pub in Camden Town by same name.", priority: [] },
+                { title: "Last Night in Soho", year: "", notes: "Edgar Wright. Toucan pub in Soho featured.", priority: [] },
+                { title: "Baby Driver", year: "", notes: "Edgar Wright. Orie: 'Watched more than 10 times, love the soundtrack'", priority: [] },
+                { title: "Notting Hill", year: "", notes: "Orie: 'My worst movie' - doesn't like Julia Roberts' face", priority: [] },
+                { title: "Bridget Jones's Diary", year: "", notes: "Orie liked Hugh Grant in this one", priority: [] }
+            ],
+            "Action/Thriller": [
+                { title: "The Fifth Element", year: "1997", notes: "Luc Besson, Bruce Willis. Val loves this era. Orie only watched scenes.", priority: ["orie"] },
+                { title: "Die Hard", year: "1988", notes: "Bruce Willis. The best Christmas movie. Always on German cable TV at Christmas.", priority: ["orie"] },
+                { title: "Drive", year: "", notes: "Ryan Gosling. Val thinks of this when hearing Baby Driver.", priority: [] },
+                { title: "Nightcrawler", year: "2014", notes: "Jake Gyllenhaal. Val watched in cinema. About journalist staging accidents.", priority: ["orie"] }
+            ],
+            "Comedy/Dark Comedy": [
+                { title: "The Big Lebowski", year: "", notes: "Coen Brothers. Both consider it a classic.", priority: [] },
+                { title: "Burn After Reading", year: "", notes: "Coen Brothers. Val: 'Brad Pitt was so funny in it'. Orie hasn't watched.", priority: ["orie"] },
+                { title: "Fargo", year: "", notes: "Coen Brothers. Always in Orie's watchlist. Val: 'Weird vibe, Coen Brothers know how to film dialogue'", priority: ["orie"] },
+                { title: "Raising Arizona", year: "", notes: "Coen Brothers. Orie loves this one. Val hasn't seen (too old).", priority: ["val"] },
+                { title: "The Nice Guys", year: "2016", notes: "Ryan Gosling, Russell Crowe. Good comedic buddy cop duo. Orie loved Matt Bomer.", priority: [] },
+                { title: "Home Alone", year: "", notes: "Val seen many times. Always shown on Japanese TV at Christmas.", priority: [] }
+            ],
+            "David Fincher Films": [
+                { title: "Fight Club", year: "", notes: "Orie: 'I love the most'", priority: [] },
+                { title: "The Girl with the Dragon Tattoo", year: "", notes: "Orie loves", priority: [] },
+                { title: "Gone Girl", year: "", notes: "Orie loves", priority: [] },
+                { title: "The Social Network", year: "", notes: "Orie: 'Loved the ending scene'. Val: 'Seen multiple times, Andrew Garfield is great'", priority: [] }
+            ],
+            "Other Films": [
+                { title: "Magic Mike", year: "2012", notes: "Channing Tatum. Orie: 'So fun, only macho guys'. Val hasn't seen. Live show in London.", priority: ["val"] },
+                { title: "The Invasion", year: "2007", notes: "Nicole Kidman. Val's least favorite - made him stop liking her acting.", priority: [] },
+                { title: "Donnie Darko", year: "2001", notes: "Jake Gyllenhaal. Orie likes. Val hasn't watched but knows he'll like it.", priority: ["val"] }
+            ],
+            "TV Series": [
+                { title: "BEEF (Netflix)", year: "", notes: "Same director as Rental Family. Orie: 'Fun'. Val hasn't seen yet.", priority: ["val"] },
+                { title: "Mindhunter (Netflix)", year: "", notes: "David Fincher. Val: 'So good but got canceled after one season'", priority: [] }
+            ]
+        };
+
+        let watchedState = JSON.parse(localStorage.getItem('movieWatchlist')) || {};
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        function initializeWatchlist() {
+            renderMovies();
+            updateStats();
+            setupEventListeners();
+        }
+
+        function renderMovies() {
+            const container = document.getElementById('movieContainer');
+            container.innerHTML = '';
+
+            Object.keys(movies).forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                
+                const categoryMovies = movies[category];
+                const watchedCount = categoryMovies.filter(m => watchedState[getMovieId(category, m.title)]).length;
+                const totalCount = categoryMovies.length;
+
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'category-header';
+                categoryHeader.innerHTML = `
+                    <div class="category-title">
+                        <span class="collapse-icon">▼</span> ${category}
+                    </div>
+                    <div class="category-progress">${watchedCount}/${totalCount}</div>
+                `;
+                categoryHeader.onclick = () => toggleCategory(categoryDiv);
+
+                const movieList = document.createElement('div');
+                movieList.className = 'movie-list';
+
+                categoryMovies.forEach(movie => {
+                    const movieId = getMovieId(category, movie.title);
+                    const isWatched = watchedState[movieId] || false;
+
+                    // Apply filters
+                    if (!shouldShowMovie(movie, isWatched)) {
+                        return;
+                    }
+
+                    const movieDiv = document.createElement('div');
+                    movieDiv.className = 'movie-item';
+                    if (isWatched) movieDiv.classList.add('watched');
+                    if (movie.priority.includes('val')) movieDiv.classList.add('priority-val');
+                    if (movie.priority.includes('orie')) movieDiv.classList.add('priority-orie');
+
+                    let badges = '';
+                    if (movie.priority.includes('val')) badges += '<span class="priority-badge priority-val-badge">Val\'s Priority</span>';
+                    if (movie.priority.includes('orie')) badges += '<span class="priority-badge priority-orie-badge">Orie\'s Priority</span>';
+                    if (movie.priority.includes('together')) badges += '<span class="priority-badge together-badge">Watch Together</span>';
+
+                    movieDiv.innerHTML = `
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" class="checkbox" ${isWatched ? 'checked' : ''} 
+                                onchange="toggleWatched('${movieId}', this.checked)">
+                        </div>
+                        <div class="movie-content">
+                            <div class="movie-title">${movie.title}</div>
+                            ${movie.year ? `<div class="movie-meta">${movie.year}</div>` : ''}
+                            ${badges}
+                            <div class="movie-notes">${movie.notes}</div>
+                        </div>
+                    `;
+
+                    movieList.appendChild(movieDiv);
+                });
+
+                categoryDiv.appendChild(categoryHeader);
+                categoryDiv.appendChild(movieList);
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        function shouldShowMovie(movie, isWatched) {
+            // Search filter
+            if (searchTerm) {
+                const searchLower = searchTerm.toLowerCase();
+                const matchesSearch = 
+                    movie.title.toLowerCase().includes(searchLower) ||
+                    movie.notes.toLowerCase().includes(searchLower) ||
+                    (movie.year && movie.year.includes(searchLower));
+                if (!matchesSearch) return false;
+            }
+
+            // Status filter
+            if (currentFilter === 'unwatched' && isWatched) return false;
+            if (currentFilter === 'watched' && !isWatched) return false;
+            if (currentFilter === 'priority-val' && !movie.priority.includes('val')) return false;
+            if (currentFilter === 'priority-orie' && !movie.priority.includes('orie')) return false;
+
+            return true;
+        }
+
+        function getMovieId(category, title) {
+            return `${category}::${title}`;
+        }
+
+        function toggleWatched(movieId, watched) {
+            watchedState[movieId] = watched;
+            localStorage.setItem('movieWatchlist', JSON.stringify(watchedState));
+            updateStats();
+            renderMovies();
+        }
+
+        function updateStats() {
+            let total = 0;
+            let watched = 0;
+
+            Object.keys(movies).forEach(category => {
+                movies[category].forEach(movie => {
+                    total++;
+                    const movieId = getMovieId(category, movie.title);
+                    if (watchedState[movieId]) watched++;
+                });
+            });
+
+            document.getElementById('totalMovies').textContent = total;
+            document.getElementById('watchedMovies').textContent = watched;
+            document.getElementById('remainingMovies').textContent = total - watched;
+        }
+
+        function setupEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderMovies();
+                });
+            });
+
+            // Search box
+            document.getElementById('searchBox').addEventListener('input', function(e) {
+                searchTerm = e.target.value;
+                renderMovies();
+            });
+        }
+
+        function toggleCategory(categoryDiv) {
+            categoryDiv.classList.toggle('collapsed');
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('movieWatchlist');
+                watchedState = {};
+                renderMovies();
+                updateStats();
+            }
+        }
+
+        // Initialize on load
+        initializeWatchlist();
+    </script>
+</body>
+</html>
