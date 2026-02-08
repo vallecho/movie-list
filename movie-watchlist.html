@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Val & Orie's Movie Watchlist</title>
+    <title>Movie Watchlist</title>
     <style>
         * {
             margin: 0;
@@ -13,230 +13,180 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%);
-            color: #e0e0e0;
+            background: #f5f5f5;
+            color: #333;
             padding: 20px;
-            min-height: 100vh;
+            line-height: 1.6;
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         header {
-            text-align: center;
             margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         h1 {
-            color: #ff006e;
-            font-size: 2em;
+            font-size: 1.8em;
+            color: #222;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
-        }
-
-        .subtitle {
-            color: #00d9ff;
-            font-size: 0.9em;
-            opacity: 0.8;
         }
 
         .stats {
             display: flex;
-            justify-content: space-around;
+            gap: 20px;
             margin: 20px 0;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            flex-wrap: wrap;
-            gap: 15px;
+            background: #fafafa;
+            border-radius: 6px;
         }
 
-        .stat-item {
-            text-align: center;
+        .stat {
+            font-size: 0.9em;
+            color: #666;
         }
 
-        .stat-number {
-            font-size: 2em;
-            color: #ff006e;
-            font-weight: bold;
+        .stat strong {
+            color: #222;
+            font-size: 1.2em;
+            display: block;
         }
 
-        .stat-label {
-            font-size: 0.8em;
-            color: #00d9ff;
-            text-transform: uppercase;
+        .search {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .search:focus {
+            outline: none;
+            border-color: #999;
         }
 
         .filters {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
         .filter-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 0, 110, 0.3);
-            color: #e0e0e0;
-            border-radius: 25px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
             font-size: 0.9em;
+            transition: all 0.2s;
         }
 
         .filter-btn:hover {
-            background: rgba(255, 0, 110, 0.2);
-            border-color: #ff006e;
+            background: #f5f5f5;
         }
 
         .filter-btn.active {
-            background: #ff006e;
-            border-color: #ff006e;
+            background: #333;
             color: white;
+            border-color: #333;
         }
 
-        .search-box {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(0, 217, 255, 0.3);
-            border-radius: 10px;
-            color: #e0e0e0;
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: #00d9ff;
-        }
-
-        .category {
+        .genre-section {
             margin-bottom: 30px;
         }
 
-        .category-header {
+        .genre-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(139, 0, 255, 0.2));
-            border-radius: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
             margin-bottom: 15px;
             cursor: pointer;
             user-select: none;
         }
 
-        .category-title {
-            font-size: 1.3em;
-            color: #ff006e;
-            font-weight: bold;
+        .genre-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
         }
 
-        .category-progress {
+        .genre-count {
             font-size: 0.9em;
-            color: #00d9ff;
+            color: #666;
         }
 
-        .movie-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .movie-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid transparent;
-            transition: all 0.3s;
+        .movie {
             display: flex;
-            align-items: flex-start;
-            gap: 15px;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .movie-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+        .movie:last-child {
+            border-bottom: none;
         }
 
-        .movie-item.watched {
-            opacity: 0.6;
-            border-left-color: #00ff88;
-        }
-
-        .movie-item.priority-val {
-            border-left-color: #ff006e;
-        }
-
-        .movie-item.priority-orie {
-            border-left-color: #00d9ff;
-        }
-
-        .checkbox-wrapper {
-            flex-shrink: 0;
-            padding-top: 2px;
+        .movie.watched {
+            opacity: 0.5;
         }
 
         .checkbox {
-            width: 24px;
-            height: 24px;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
             cursor: pointer;
-            accent-color: #ff006e;
         }
 
-        .movie-content {
+        .movie-info {
             flex: 1;
         }
 
         .movie-title {
-            font-size: 1.1em;
-            color: #ffffff;
-            margin-bottom: 5px;
             font-weight: 600;
+            color: #222;
+            margin-bottom: 4px;
         }
 
         .movie-meta {
             font-size: 0.85em;
-            color: #00d9ff;
-            margin-bottom: 5px;
+            color: #999;
+            margin-bottom: 6px;
         }
 
-        .movie-notes {
+        .movie-description {
             font-size: 0.9em;
-            color: #b0b0b0;
-            line-height: 1.4;
-            margin-top: 5px;
+            color: #666;
         }
 
-        .priority-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.75em;
-            margin-right: 5px;
-            font-weight: bold;
+        .reset-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .priority-val-badge {
-            background: rgba(255, 0, 110, 0.3);
-            color: #ff006e;
-        }
-
-        .priority-orie-badge {
-            background: rgba(0, 217, 255, 0.3);
-            color: #00d9ff;
-        }
-
-        .together-badge {
-            background: rgba(0, 255, 136, 0.3);
-            color: #00ff88;
+        .reset-btn:hover {
+            background: #555;
         }
 
         .hidden {
@@ -255,29 +205,9 @@
             transform: rotate(-90deg);
         }
 
-        .reset-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background: rgba(255, 0, 110, 0.8);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-size: 0.9em;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.4);
-            transition: all 0.3s;
-        }
-
-        .reset-btn:hover {
-            background: #ff006e;
-            transform: scale(1.05);
-        }
-
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
+            .container {
+                padding: 20px;
             }
 
             h1 {
@@ -285,25 +215,8 @@
             }
 
             .stats {
+                flex-direction: column;
                 gap: 10px;
-            }
-
-            .stat-number {
-                font-size: 1.5em;
-            }
-
-            .category-title {
-                font-size: 1.1em;
-            }
-
-            .movie-title {
-                font-size: 1em;
-            }
-
-            .reset-btn {
-                bottom: 10px;
-                right: 10px;
-                padding: 12px 20px;
             }
         }
     </style>
@@ -311,294 +224,250 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎬 Val & Orie's Movie Watchlist</h1>
-            <p class="subtitle">Compiled from conversations • Jan-Feb 2026</p>
+            <h1>Movie Watchlist</h1>
+            <div class="stats">
+                <div class="stat">
+                    <strong id="totalCount">0</strong>
+                    Total
+                </div>
+                <div class="stat">
+                    <strong id="watchedCount">0</strong>
+                    Watched
+                </div>
+                <div class="stat">
+                    <strong id="remainingCount">0</strong>
+                    Remaining
+                </div>
+            </div>
         </header>
 
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number" id="totalMovies">0</div>
-                <div class="stat-label">Total</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="watchedMovies">0</div>
-                <div class="stat-label">Watched</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="remainingMovies">0</div>
-                <div class="stat-label">Remaining</div>
-            </div>
-        </div>
-
-        <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search movies...">
+        <input type="text" class="search" id="search" placeholder="Search movies...">
 
         <div class="filters">
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="unwatched">Unwatched</button>
             <button class="filter-btn" data-filter="watched">Watched</button>
-            <button class="filter-btn" data-filter="priority-val">Val's Priority</button>
-            <button class="filter-btn" data-filter="priority-orie">Orie's Priority</button>
         </div>
 
-        <div id="movieContainer"></div>
+        <div id="content"></div>
 
-        <button class="reset-btn" onclick="resetProgress()">🔄 Reset All</button>
+        <button class="reset-btn" onclick="resetAll()">Reset All</button>
     </div>
 
     <script>
         const movies = {
-            "Yorgos Lanthimos Films": [
-                { title: "Bugonia", year: "2026", notes: "Available in Val's private collection. No longer in UK theaters.", priority: [] },
-                { title: "The Killing of a Sacred Deer", year: "", notes: "Nicole Kidman stars, early A24 era. Orie: 'She was good at acting like android'", priority: ["val"] }
+            "Drama": [
+                { title: "The Killing of a Sacred Deer", year: "2017", desc: "A surgeon's life unravels when a mysterious teenager enters his life." },
+                { title: "Stoker", year: "2013", desc: "After her father's death, a girl's mysterious uncle comes to live with her and her emotionally unstable mother." },
+                { title: "Trainspotting", year: "1996", desc: "Heroin addicts in Edinburgh navigate recovery, relapse, and redemption." },
+                { title: "Trainspotting 2", year: "2017", desc: "Twenty years later, the gang reunites in Edinburgh to confront their past." },
+                { title: "In Bruges", year: "2008", desc: "Two hitmen hide out in Bruges after a job goes wrong." },
+                { title: "Harold and Maude", year: "1971", desc: "A young man obsessed with death falls in love with a vibrant 79-year-old woman." },
+                { title: "Laurence Anyways", year: "2012", desc: "A love story spanning a decade about a trans woman and her partner." },
+                { title: "Opening Night", year: "1977", desc: "An actress's breakdown during a theatrical production." },
+                { title: "The House That Jack Built", year: "2018", desc: "A serial killer recounts his twelve-year murder spree." },
+                { title: "Nymphomaniac", year: "2013", desc: "A self-diagnosed nymphomaniac recounts her erotic experiences." }
             ],
-            "Japanese/Asian Cinema": [
-                { title: "Rental Family", year: "", notes: "Same director as BEEF. Japan premiere at Tokyo Int'l Film Festival. Planning to watch together.", priority: ["together"] },
-                { title: "Stoker", year: "", notes: "Park Chan-wook, Nicole Kidman. Orie: 'That's my favorite'", priority: ["val"] }
+            "Comedy": [
+                { title: "Hot Fuzz", year: "2007", desc: "A top London cop is transferred to a seemingly quiet village where gruesome accidents occur." },
+                { title: "Shaun of the Dead", year: "2004", desc: "A man's life is disrupted when a zombie apocalypse breaks out in London." },
+                { title: "The World's End", year: "2013", desc: "Five friends reunite for a pub crawl and discover an alien invasion." },
+                { title: "Baby Driver", year: "2017", desc: "A talented getaway driver relies on music to focus during heists." },
+                { title: "The Big Lebowski", year: "1998", desc: "A lazy slacker is mistaken for a millionaire and drawn into a complex kidnapping plot." },
+                { title: "Burn After Reading", year: "2008", desc: "Gym employees stumble upon a disc containing CIA secrets." },
+                { title: "Fargo", year: "1996", desc: "A car salesman's debt leads to a botched kidnapping in snowy Minnesota." },
+                { title: "Raising Arizona", year: "1987", desc: "An ex-con and ex-cop couple kidnap a baby when they can't conceive." },
+                { title: "The Nice Guys", year: "2016", desc: "A private eye and a hired enforcer team up in 1970s Los Angeles." },
+                { title: "This Is Spinal Tap", year: "1984", desc: "A rockumentary following a declining British heavy metal band on tour." },
+                { title: "The Other Guys", year: "2010", desc: "Two mismatched cops stumble onto a major financial crime." },
+                { title: "Dicks: The Musical", year: "2023", desc: "Two identical businessmen discover they're twins and reunite their divorced parents." },
+                { title: "The Benchwarmers", year: "2006", desc: "Three adult nerds form a baseball team to take on Little League bullies." },
+                { title: "The Room", year: "2003", desc: "A banker's fiancée seduces his best friend. (Cult classic for being hilariously bad)" },
+                { title: "Everybody Wants Some!!", year: "2016", desc: "College baseball players navigate parties and girls in 1980s Texas." },
+                { title: "Frank", year: "2014", desc: "An aspiring musician joins an eccentric pop band led by a man in a giant fake head." },
+                { title: "Hedwig and the Angry Inch", year: "2001", desc: "A transgender punk-rock singer from East Berlin tours America." }
             ],
-            "Wes Anderson": [
-                { title: "The Phoenician Scheme", year: "", notes: "Val watched Jan 27, 2026", priority: [] }
+            "Horror / Thriller": [
+                { title: "Bugonia", year: "2026", desc: "Yorgos Lanthimos film." },
+                { title: "Paranormal Activity", year: "2007", desc: "A couple is haunted by a supernatural presence in their home, captured on camera." },
+                { title: "Blair Witch Project", year: "1999", desc: "Three students disappear while filming a documentary about a local legend." },
+                { title: "Late Night with the Devil", year: "2023", desc: "A 1970s talk show's Halloween special goes horrifically wrong." },
+                { title: "Suspiria", year: "2018", desc: "A dancer joins a prestigious Berlin academy that's a front for something sinister." },
+                { title: "Black Swan", year: "2010", desc: "A ballerina's obsession with a role drives her to madness." },
+                { title: "Videodrome", year: "1983", desc: "A TV programmer discovers a broadcast signal featuring extreme violence and torture." },
+                { title: "Nightcrawler", year: "2014", desc: "A freelance cameraman blurs ethical lines filming violent crime scenes for news." }
             ],
-            "British Cinema": [
-                { title: "Trainspotting", year: "1996", notes: "Great soundtrack (Lou Reed, New Order). Val went to Scotland to visit locations. Orie wants to rewatch.", priority: ["together"] },
-                { title: "Trainspotting 2 (T2)", year: "", notes: "Val has seen, Orie hasn't", priority: ["together"] },
-                { title: "Monty Python and the Holy Grail", year: "", notes: "Filmed at castle in Scotland", priority: [] },
-                { title: "In Bruges", year: "", notes: "Val loves it. Mix of comedy and seriousness.", priority: ["orie"] },
-                { title: "Hot Fuzz", year: "", notes: "Edgar Wright. Filmed in Wells. Both love it.", priority: [] },
-                { title: "Shaun of the Dead", year: "", notes: "Edgar Wright. Both love it.", priority: [] },
-                { title: "The World's End", year: "", notes: "Edgar Wright. Pub in Camden Town by same name.", priority: [] },
-                { title: "Last Night in Soho", year: "", notes: "Edgar Wright. Toucan pub in Soho featured.", priority: [] },
-                { title: "Baby Driver", year: "", notes: "Edgar Wright. Orie: 'Watched more than 10 times, love the soundtrack'", priority: [] },
-                { title: "Notting Hill", year: "", notes: "Orie: 'My worst movie' - doesn't like Julia Roberts' face", priority: [] },
-                { title: "Bridget Jones's Diary", year: "", notes: "Orie liked Hugh Grant in this one", priority: [] }
+            "Action / Crime": [
+                { title: "Drive", year: "2011", desc: "A Hollywood stunt driver moonlights as a getaway driver." },
+                { title: "The Fifth Element", year: "1997", desc: "A cab driver must help save Earth from cosmic evil in the 23rd century." },
+                { title: "Die Hard", year: "1988", desc: "A New York cop battles terrorists who've taken over a Los Angeles skyscraper." },
+                { title: "High and Low", year: "1963", desc: "An executive's son is kidnapped, but his chauffeur's son is taken by mistake." }
             ],
-            "Action/Thriller": [
-                { title: "The Fifth Element", year: "1997", notes: "Luc Besson, Bruce Willis. Val loves this era. Orie only watched scenes.", priority: ["orie"] },
-                { title: "Die Hard", year: "1988", notes: "Bruce Willis. The best Christmas movie. Always on German cable TV at Christmas.", priority: ["orie"] },
-                { title: "Drive", year: "", notes: "Ryan Gosling. Val thinks of this when hearing Baby Driver.", priority: [] },
-                { title: "Nightcrawler", year: "2014", notes: "Jake Gyllenhaal. Val watched in cinema. About journalist staging accidents.", priority: ["orie"] }
+            "Sci-Fi / Fantasy": [
+                { title: "The Phoenician Scheme", year: "", desc: "Wes Anderson film." },
+                { title: "Monty Python and the Holy Grail", year: "1975", desc: "King Arthur and his knights embark on a low-budget search for the Holy Grail." },
+                { title: "Last Night in Soho", year: "2021", desc: "A fashion student is mysteriously transported to 1960s London." },
+                { title: "The Hitchhiker's Guide to the Galaxy", year: "2005", desc: "Earth is demolished for a hyperspace bypass; one human escapes with an alien friend." },
+                { title: "Donnie Darko", year: "2001", desc: "A troubled teenager experiences visions of a man in a rabbit suit predicting the world's end." }
             ],
-            "Comedy/Dark Comedy": [
-                { title: "The Big Lebowski", year: "", notes: "Coen Brothers. Both consider it a classic.", priority: [] },
-                { title: "Burn After Reading", year: "", notes: "Coen Brothers. Val: 'Brad Pitt was so funny in it'. Orie hasn't watched.", priority: ["orie"] },
-                { title: "Fargo", year: "", notes: "Coen Brothers. Always in Orie's watchlist. Val: 'Weird vibe, Coen Brothers know how to film dialogue'", priority: ["orie"] },
-                { title: "Raising Arizona", year: "", notes: "Coen Brothers. Orie loves this one. Val hasn't seen (too old).", priority: ["val"] },
-                { title: "The Nice Guys", year: "2016", notes: "Ryan Gosling, Russell Crowe. Good comedic buddy cop duo. Orie loved Matt Bomer.", priority: [] },
-                { title: "Home Alone", year: "", notes: "Val seen many times. Always shown on Japanese TV at Christmas.", priority: [] },
-                { title: "This Is Spinal Tap", year: "1984", notes: "From Orie's list of 20", priority: ["val"] },
-                { title: "The Other Guys", year: "2010", notes: "Will Ferrell. Orie: 'Really loved his hot wife' (Eva Mendes). Val knows this one.", priority: ["val"] },
-                { title: "Dicks: The Musical", year: "2023", notes: "From Orie's list of 20", priority: ["val"] },
-                { title: "The Benchwarmers", year: "2006", notes: "Orie: 'Terrible, and I loved that'. Val knows it.", priority: ["val"] },
-                { title: "The Room", year: "", notes: "Tommy Wiseau. Infamous for being so bad it's hilarious. Screening at Prince Charles cinema Feb 27. Orie didn't know it before.", priority: [] }
+            "Romance / Musicals": [
+                { title: "Notting Hill", year: "1999", desc: "A bookshop owner falls in love with a famous American actress." },
+                { title: "Bridget Jones's Diary", year: "2001", desc: "A British woman decides to take control of her life and documents her journey." },
+                { title: "Magic Mike", year: "2012", desc: "A male stripper teaches a younger performer about the lifestyle." },
+                { title: "Happy Together", year: "1997", desc: "Two men from Hong Kong have a turbulent relationship in Argentina." }
             ],
-            "David Fincher Films": [
-                { title: "Fight Club", year: "", notes: "Orie: 'I love the most'", priority: [] },
-                { title: "The Girl with the Dragon Tattoo", year: "", notes: "Orie loves", priority: [] },
-                { title: "Gone Girl", year: "", notes: "Orie loves", priority: [] },
-                { title: "The Social Network", year: "", notes: "Orie: 'Loved the ending scene'. Val: 'Seen multiple times, Andrew Garfield is great'", priority: [] }
+            "Animation": [
+                { title: "The Triplets of Belleville", year: "2003", desc: "A grandmother and her dog rescue her grandson, a Tour de France cyclist, from the French mafia." },
+                { title: "Persepolis", year: "2007", desc: "An Iranian girl grows up during the Islamic Revolution." },
+                { title: "Mary and Max", year: "2009", desc: "A lonely Australian girl befriends an overweight New Yorker with Asperger's." },
+                { title: "Fantastic Planet", year: "1973", desc: "Humans are kept as pets on an alien planet dominated by giant blue beings." }
             ],
-            "Horror/Psychological": [
-                { title: "Paranormal Activity", year: "", notes: "Found footage. Val likes this style.", priority: [] },
-                { title: "Blair Witch", year: "", notes: "Found footage. Val likes this style.", priority: [] },
-                { title: "The House That Jack Built", year: "", notes: "Orie: 'Very bloody but also kind of artistic'", priority: ["val"] },
-                { title: "Late Night with the Devil", year: "", notes: "Orie watched at film festival in Texas: 'Unexpectedly good'", priority: ["val"] },
-                { title: "Nymphomaniac", year: "", notes: "Lars Von Trier. Val: 'So weird but interesting'. Orie: 'Similar vibe'", priority: ["val"] },
-                { title: "Suspiria", year: "", notes: "Orie: 'You might like it'. Val: 'Feels like Black Swan but extreme horror version'", priority: ["val"] },
-                { title: "Black Swan", year: "", notes: "Mentioned as comparison to Suspiria", priority: [] },
-                { title: "Videodrome", year: "1983", notes: "From Orie's list of 20", priority: ["val"] }
+            "Arthouse / International": [
+                { title: "Rental Family", year: "2023", desc: "A man who rents out actors to play his family confronts his real past." },
+                { title: "Mr. Lonely", year: "2007", desc: "Michael Jackson impersonator finds a commune of celebrity impersonators." },
+                { title: "Close-up", year: "1990", desc: "Iranian film about a man who impersonates a famous director." },
+                { title: "Leningrad Cowboys Go America", year: "1989", desc: "A Finnish band tours America with their frozen bandmate." },
+                { title: "Sweet Dreams", year: "2023", desc: "Turkish film about a family's vacation in a coastal town." },
+                { title: "Ran", year: "1985", desc: "Kurosawa's adaptation of King Lear set in medieval Japan." },
+                { title: "Throne of Blood", year: "1957", desc: "Kurosawa's adaptation of Macbeth set in feudal Japan." }
             ],
-            "Orie's Big List (20 Films)": [
-                { title: "Mr. Lonely", year: "2007", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Everybody Wants Some!!", year: "2016", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "The Triplets of Belleville", year: "2003", notes: "Animated. From Orie's curated list", priority: ["val"] },
-                { title: "Happy Together", year: "1997", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Hedwig and the Angry Inch", year: "2001", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Frank", year: "2014", notes: "Val knows this one. From Orie's curated list", priority: ["val"] },
-                { title: "High and Low", year: "1963", notes: "Kurosawa film. From Orie's curated list", priority: ["val"] },
-                { title: "Persepolis", year: "2007", notes: "Animated. From Orie's curated list", priority: ["val"] },
-                { title: "Harold and Maude", year: "1971", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Sweet Dreams", year: "2023", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Mary and Max", year: "2009", notes: "Animated. From Orie's curated list", priority: ["val"] },
-                { title: "Fantastic Planet", year: "1973", notes: "Animated. From Orie's curated list", priority: ["val"] },
-                { title: "Close-up", year: "1990", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Laurence Anyways", year: "2012", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Leningrad Cowboys Go America", year: "1989", notes: "From Orie's curated list", priority: ["val"] },
-                { title: "Opening Night", year: "1977", notes: "From Orie's curated list", priority: ["val"] }
+            "Mystery / Thriller": [
+                { title: "Fight Club", year: "1999", desc: "An insomniac office worker forms an underground fight club." },
+                { title: "The Girl with the Dragon Tattoo", year: "2011", desc: "A journalist and a hacker investigate a wealthy family's dark history." },
+                { title: "Gone Girl", year: "2014", desc: "A woman's disappearance becomes a media sensation with dark twists." },
+                { title: "The Social Network", year: "2010", desc: "The founding of Facebook and the lawsuits that followed." },
+                { title: "Room", year: "2015", desc: "A woman and her son escape from captivity and adjust to the outside world." }
             ],
-            "Kurosawa Films": [
-                { title: "Ran", year: "", notes: "Val asked about this one. Kurosawa film.", priority: [] },
-                { title: "Throne of Blood", year: "", notes: "Kurosawa film Orie mentioned", priority: [] }
-            ],
-            "Other Films": [
-                { title: "Magic Mike", year: "2012", notes: "Channing Tatum. Orie: 'So fun, only macho guys'. Val hasn't seen. Live show in London.", priority: ["val"] },
-                { title: "The Invasion", year: "2007", notes: "Nicole Kidman. Val's least favorite - made him stop liking her acting.", priority: [] },
-                { title: "Donnie Darko", year: "2001", notes: "Jake Gyllenhaal. Orie likes. Val hasn't watched but knows he'll like it.", priority: ["val"] },
-                { title: "The Hitchhiker's Guide To The Galaxy", year: "", notes: "Val loves it. Great book series too.", priority: [] },
-                { title: "Room", year: "", notes: "Different from The Room. Orie mentioned.", priority: [] }
+            "Family / Kids": [
+                { title: "Home Alone", year: "1990", desc: "An 8-year-old defends his house from burglars when accidentally left behind." },
+                { title: "The Invasion", year: "2007", desc: "A psychiatrist discovers an alien epidemic turning people emotionless." }
             ],
             "TV Series": [
-                { title: "BEEF (Netflix)", year: "", notes: "Same director as Rental Family. Orie: 'Fun'. Val hasn't seen yet.", priority: ["val"] },
-                { title: "Mindhunter (Netflix)", year: "", notes: "David Fincher. Val: 'So good but got canceled after one season'", priority: [] }
+                { title: "BEEF", year: "2023", desc: "Two strangers' road rage incident escalates into obsessive feud." },
+                { title: "Mindhunter", year: "2017-2019", desc: "FBI agents interview imprisoned serial killers to solve ongoing cases." }
             ]
         };
 
-        let watchedState = JSON.parse(localStorage.getItem('movieWatchlist')) || {};
+        let watched = JSON.parse(localStorage.getItem('watchlist')) || {};
         let currentFilter = 'all';
         let searchTerm = '';
 
-        function initializeWatchlist() {
-            renderMovies();
-            updateStats();
-            setupEventListeners();
-        }
+        function render() {
+            const content = document.getElementById('content');
+            content.innerHTML = '';
 
-        function renderMovies() {
-            const container = document.getElementById('movieContainer');
-            container.innerHTML = '';
+            Object.keys(movies).forEach(genre => {
+                const section = document.createElement('div');
+                section.className = 'genre-section';
 
-            Object.keys(movies).forEach(category => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'category';
-                
-                const categoryMovies = movies[category];
-                const watchedCount = categoryMovies.filter(m => watchedState[getMovieId(category, m.title)]).length;
-                const totalCount = categoryMovies.length;
+                const genreMovies = movies[genre].filter(m => shouldShow(m, genre));
+                if (genreMovies.length === 0) return;
 
-                const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'category-header';
-                categoryHeader.innerHTML = `
-                    <div class="category-title">
-                        <span class="collapse-icon">▼</span> ${category}
-                    </div>
-                    <div class="category-progress">${watchedCount}/${totalCount}</div>
+                const watchedInGenre = genreMovies.filter(m => watched[getId(genre, m.title)]).length;
+
+                const header = document.createElement('div');
+                header.className = 'genre-header';
+                header.onclick = () => section.classList.toggle('collapsed');
+                header.innerHTML = `
+                    <div class="genre-title"><span class="collapse-icon">▼</span> ${genre}</div>
+                    <div class="genre-count">${watchedInGenre}/${genreMovies.length}</div>
                 `;
-                categoryHeader.onclick = () => toggleCategory(categoryDiv);
 
-                const movieList = document.createElement('div');
-                movieList.className = 'movie-list';
+                const list = document.createElement('div');
+                list.className = 'movie-list';
 
-                categoryMovies.forEach(movie => {
-                    const movieId = getMovieId(category, movie.title);
-                    const isWatched = watchedState[movieId] || false;
+                genreMovies.forEach(movie => {
+                    const id = getId(genre, movie.title);
+                    const isWatched = watched[id] || false;
 
-                    // Apply filters
-                    if (!shouldShowMovie(movie, isWatched)) {
-                        return;
-                    }
-
-                    const movieDiv = document.createElement('div');
-                    movieDiv.className = 'movie-item';
-                    if (isWatched) movieDiv.classList.add('watched');
-                    if (movie.priority.includes('val')) movieDiv.classList.add('priority-val');
-                    if (movie.priority.includes('orie')) movieDiv.classList.add('priority-orie');
-
-                    let badges = '';
-                    if (movie.priority.includes('val')) badges += '<span class="priority-badge priority-val-badge">Val\'s Priority</span>';
-                    if (movie.priority.includes('orie')) badges += '<span class="priority-badge priority-orie-badge">Orie\'s Priority</span>';
-                    if (movie.priority.includes('together')) badges += '<span class="priority-badge together-badge">Watch Together</span>';
-
-                    movieDiv.innerHTML = `
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" class="checkbox" ${isWatched ? 'checked' : ''} 
-                                onchange="toggleWatched('${movieId}', this.checked)">
-                        </div>
-                        <div class="movie-content">
+                    const div = document.createElement('div');
+                    div.className = 'movie' + (isWatched ? ' watched' : '');
+                    div.innerHTML = `
+                        <input type="checkbox" class="checkbox" ${isWatched ? 'checked' : ''} 
+                            onchange="toggle('${id}', this.checked)">
+                        <div class="movie-info">
                             <div class="movie-title">${movie.title}</div>
                             ${movie.year ? `<div class="movie-meta">${movie.year}</div>` : ''}
-                            ${badges}
-                            <div class="movie-notes">${movie.notes}</div>
+                            <div class="movie-description">${movie.desc}</div>
                         </div>
                     `;
-
-                    movieList.appendChild(movieDiv);
+                    list.appendChild(div);
                 });
 
-                categoryDiv.appendChild(categoryHeader);
-                categoryDiv.appendChild(movieList);
-                container.appendChild(categoryDiv);
+                section.appendChild(header);
+                section.appendChild(list);
+                content.appendChild(section);
             });
+
+            updateStats();
         }
 
-        function shouldShowMovie(movie, isWatched) {
-            // Search filter
+        function shouldShow(movie, genre) {
             if (searchTerm) {
-                const searchLower = searchTerm.toLowerCase();
-                const matchesSearch = 
-                    movie.title.toLowerCase().includes(searchLower) ||
-                    movie.notes.toLowerCase().includes(searchLower) ||
-                    (movie.year && movie.year.includes(searchLower));
-                if (!matchesSearch) return false;
+                const search = searchTerm.toLowerCase();
+                const matches = movie.title.toLowerCase().includes(search) ||
+                               movie.desc.toLowerCase().includes(search) ||
+                               (movie.year && movie.year.includes(search)) ||
+                               genre.toLowerCase().includes(search);
+                if (!matches) return false;
             }
 
-            // Status filter
-            if (currentFilter === 'unwatched' && isWatched) return false;
+            const id = getId(genre, movie.title);
+            const isWatched = watched[id] || false;
+
             if (currentFilter === 'watched' && !isWatched) return false;
-            if (currentFilter === 'priority-val' && !movie.priority.includes('val')) return false;
-            if (currentFilter === 'priority-orie' && !movie.priority.includes('orie')) return false;
+            if (currentFilter === 'unwatched' && isWatched) return false;
 
             return true;
         }
 
-        function getMovieId(category, title) {
-            return `${category}::${title}`;
+        function getId(genre, title) {
+            return `${genre}::${title}`;
         }
 
-        function toggleWatched(movieId, watched) {
-            watchedState[movieId] = watched;
-            localStorage.setItem('movieWatchlist', JSON.stringify(watchedState));
-            updateStats();
-            renderMovies();
+        function toggle(id, isWatched) {
+            watched[id] = isWatched;
+            localStorage.setItem('watchlist', JSON.stringify(watched));
+            render();
         }
 
         function updateStats() {
-            let total = 0;
-            let watched = 0;
-
-            Object.keys(movies).forEach(category => {
-                movies[category].forEach(movie => {
+            let total = 0, watchedCount = 0;
+            Object.keys(movies).forEach(genre => {
+                movies[genre].forEach(m => {
                     total++;
-                    const movieId = getMovieId(category, movie.title);
-                    if (watchedState[movieId]) watched++;
+                    if (watched[getId(genre, m.title)]) watchedCount++;
                 });
             });
 
-            document.getElementById('totalMovies').textContent = total;
-            document.getElementById('watchedMovies').textContent = watched;
-            document.getElementById('remainingMovies').textContent = total - watched;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('watchedCount').textContent = watchedCount;
+            document.getElementById('remainingCount').textContent = total - watchedCount;
         }
 
-        function setupEventListeners() {
-            // Filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentFilter = this.dataset.filter;
-                    renderMovies();
-                });
-            });
-
-            // Search box
-            document.getElementById('searchBox').addEventListener('input', function(e) {
-                searchTerm = e.target.value;
-                renderMovies();
-            });
-        }
-
-        function toggleCategory(categoryDiv) {
-            categoryDiv.classList.toggle('collapsed');
-        }
-
-        function resetProgress() {
-            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-                localStorage.removeItem('movieWatchlist');
-                watchedState = {};
-                renderMovies();
-                updateStats();
+        function resetAll() {
+            if (confirm('Reset all progress?')) {
+                localStorage.removeItem('watchlist');
+                watched = {};
+                render();
             }
         }
 
-        // Initialize on load
-        initializeWatchlist();
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.onclick = function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                render();
+            };
+        });
+
+        document.getElementById('search').oninput = function(e) {
+            searchTerm = e.target.value;
+            render();
+        };
+
+        render();
     </script>
 </body>
 </html>
