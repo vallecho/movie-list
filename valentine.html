@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alright, Alright, Alright...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 0, 100, 0.03) 2px,
+                    rgba(255, 0, 100, 0.03) 4px
+                );
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: #0a0a0a;
+            padding: 60px 40px;
+            border: 3px solid #ff006e;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 110, 0.5),
+                inset 0 0 60px rgba(255, 0, 110, 0.1);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #ff006e, #8b00ff, #00d9ff);
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: #ff006e;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+            font-weight: 900;
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            color: #00d9ff;
+            margin-bottom: 20px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .heart {
+            font-size: 3em;
+            margin: 20px 0;
+            filter: hue-rotate(320deg) saturate(2);
+        }
+
+        .gif-container {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .gif-container img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 2px solid #ff006e;
+            box-shadow: 0 0 15px rgba(255, 0, 110, 0.4);
+            filter: saturate(1.2) contrast(1.1);
+        }
+
+        .success-gif {
+            margin: 20px 0;
+        }
+
+        .success-gif img {
+            width: 200px;
+            height: auto;
+            border: 3px solid #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+        }
+
+        .footnote {
+            margin-top: 30px;
+            font-size: 0.75em;
+            color: #666;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .question {
+            font-size: 1.2em;
+            color: #e0e0e0;
+            margin: 30px 0;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .question strong {
+            color: #ff006e;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 15px 40px;
+            border: 2px solid;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .yes-btn {
+            background: #ff006e;
+            color: #fff;
+            border-color: #ff006e;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.8);
+            background: #ff3385;
+        }
+
+        .no-btn {
+            background: transparent;
+            color: #666;
+            border-color: #444;
+        }
+
+        .no-btn:hover {
+            border-color: #666;
+            color: #888;
+        }
+
+        .success-message {
+            display: none;
+            font-size: 1.3em;
+            color: #00d9ff;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .success-message p {
+            color: #ff006e;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes confetti-fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Still Down for Valentine's?</h1>
+        <p class="subtitle">I know you already said yes, but...</p>
+        
+        <div class="gif-container">
+            <img src="" alt="vintage">
+            <img src="" alt="retro">
+        </div>
+        
+        <p class="question">
+            Just making sure you're still ready for<br>
+            <strong>cold ones</strong>, good music.
+        </p>
+        
+        <div class="buttons" id="buttonContainer">
+            <button class="yes-btn" onclick="handleYes()">Obviously</button>
+            <button class="no-btn" id="noBtn" onclick="handleNo()">Changed My Mind</button>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <div class="success-gif">
+                <img src="https://media.giphy.com/media/11StaZ9Lj74oCY/giphy.gif" alt="celebration">
+            </div>
+            <p>Good boy 🐶<br><span style="font-size: 0.8em; opacity: 0.8;">(that deserves more than just one kiss)</span></p>
+        </div>
+
+        <p class="footnote">*Date includes: beer, banter, and a cultural museum experience TBD</p>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        const noMessages = [
+            "Oh really?",
+            "You're really doing this?",
+            "After you ALREADY said yes? 🍺",
+            "Backing out now?",
+            "Think about what you're giving up",
+            "This is cold...",
+            "I'm hurt 😢",
+            "Too late, you're stuck with me",
+            "The 'No' is literally disappearing...",
+            "See? Even the button knows you want to say yes"
+        ];
+
+        function handleYes() {
+            document.getElementById('buttonContainer').classList.add('hidden');
+            document.getElementById('successMessage').style.display = 'block';
+            createConfetti();
+        }
+
+        function handleNo() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.querySelector('.yes-btn');
+            
+            if (noClickCount < noMessages.length) {
+                noBtn.textContent = noMessages[noClickCount];
+            }
+            
+            // Make No button smaller and Yes button bigger
+            const noBtnSize = Math.max(0.5, 1 - (noClickCount * 0.15));
+            const yesBtnSize = 1 + (noClickCount * 0.2);
+            
+            noBtn.style.transform = `scale(${noBtnSize})`;
+            yesBtn.style.transform = `scale(${yesBtnSize})`;
+            
+            // Move No button randomly after a few clicks
+            if (noClickCount > 3) {
+                const x = Math.random() * 100 - 50;
+                const y = Math.random() * 50 - 25;
+                noBtn.style.position = 'relative';
+                noBtn.style.left = x + 'px';
+                noBtn.style.top = y + 'px';
+            }
+            
+            noClickCount++;
+            
+            // Eventually hide the No button
+            if (noClickCount > 8) {
+                noBtn.style.opacity = Math.max(0, 1 - (noClickCount - 8) * 0.3);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff006e', '#00d9ff', '#8b00ff', '#ff3385', '#00ffaa'];
+            const emojis = ['🍺', '🎸', '💕', '🎵', '✨'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.fontSize = '20px';
+                    confetti.style.animation = `confetti-fall ${2 + Math.random() * 2}s linear`;
+                    
+                    if (Math.random() > 0.5) {
+                        confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    } else {
+                        confetti.style.width = '10px';
+                        confetti.style.height = '10px';
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.boxShadow = `0 0 5px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                    }
+                    
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 40);
+            }
+        }
+    </script>
+</body>
+</html>
